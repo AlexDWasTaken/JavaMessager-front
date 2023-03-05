@@ -3,6 +3,21 @@ export default {
     data() {
         return {
             count: 1,
+            username: "",
+            password: "",
+            failed: false
+        }
+    },
+    methods: {
+        login: function() {
+            let fd = new FormData();
+            if (this.username == this.password) {
+                this.$router.push({
+              path: '/chat'
+            })
+            } else {
+                this.failed = true
+            }
         }
     }
     
@@ -18,20 +33,22 @@ export default {
                 <div class="form">
                     <h3 class = "logo"><i class="fa-solid fa-key"></i></h3>
                     <h2>Sign in</h2>
+                    <p v-if = "failed">username or password incorrect.</p>
                     <div class="inputBox">
-                        <input type="text" required>
+                        <input type="text" v-model="username" required>
                         <span>Username</span>
                     </div>
                     <div class="inputBox">
-                        <input type="text" required>
+                        <input type="text" v-model="password" required>
                         <span>Password</span>
                     </div>
                     <div class="links">
                         <a href="#">Sign Up</a>
                     </div>
                     <div class="inputBox">
-                        <input type="submit" value="login">
+                        <input type="submit" value="login" @click="login()">
                     </div>
+                    
                 </div>
             </div>
         </div>
