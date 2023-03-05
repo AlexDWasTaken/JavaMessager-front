@@ -1,6 +1,6 @@
 # JavaMessagerFront
 
-This template should help get you started developing with Vue 3 in Vite.
+The front-end project of JavaMessager for grading.
 
 ## Recommended IDE Setup
 
