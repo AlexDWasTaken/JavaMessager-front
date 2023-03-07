@@ -1,23 +1,61 @@
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
             count: 1,
             username: "",
             password: "",
-            failed: false
+            failed: false,
+            message: ""
         }
     },
     methods: {
         login: function() {
             let fd = new FormData();
-            if (this.username == this.password) {
+            if (this.username == this.password) {   //测试代码，即将被删除
                 this.$router.push({
-              path: '/chat'
-            })
-            } else {
-                this.failed = true
+                    path: '/chat'
+                })
+            return
             }
+
+            if(this.username == "" && this.password == "") {
+                this.message = "Please fill username and password."
+                this.failed = true;
+                return;
+            }
+
+            fd.append("username", this.username);
+            fd.append("password", this.password);
+
+            axios.post('user/login', fd)
+                .then(
+                    response => {
+                        const data = response.data
+                        console.log(data);
+                        if(data.success == false) {
+                            this.message = "Wrong username or password."
+                            this.failed = "true"
+                        } else {
+                            this.failed = "false"
+                            const token = response.data.token
+                            localStorage.setItem('token', token)
+                            this.$router.push({
+                                path: '/chat'
+                            })
+                        }
+                    }
+                )
+                .catch(error => {
+                    this.message = "Something went wrong. Please try again later."
+                    this.failed = "true"
+                    console.log(response)
+                })
+            
+
+
         }
     }
     
@@ -33,7 +71,7 @@ export default {
                 <div class="form">
                     <h3 class = "logo"><i class="fa-solid fa-key"></i></h3>
                     <h2>Sign in</h2>
-                    <p v-if = "failed">username or password incorrect.</p>
+                    <p v-if = "failed">{{message}}</p>
                     <div class="inputBox">
                         <input type="text" v-model="username" required>
                         <span>Username</span>
