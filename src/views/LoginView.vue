@@ -74,11 +74,11 @@ export default {
                     <p v-if = "failed">{{message}}</p>
                     <div class="inputBox">
                         <input type="text" v-model="username" required>
-                        <span>Username</span>
+                        <div>Username</div>
                     </div>
                     <div class="inputBox">
                         <input type="text" v-model="password" required>
-                        <span>Password</span>
+                        <div>Password</div>
                     </div>
                     <div class="links">
                         <a href="#">Sign Up</a>
@@ -241,7 +241,7 @@ export default {
 .content .form .inputBox input {
     position: relative; 
     width: 100%; 
-    padding: 10px 0 10px 25px; 
+    padding: 10px 0 10px 5px; 
     font-size: 1.25em; 
     background: transparent; 
     box-shadow: none; 
@@ -258,24 +258,31 @@ export default {
     color: #444;
 }
 
-.content .form .inputBox span { 
+.content .form .inputBox div { 
     position: absolute; 
     left: 0; 
-    padding: 10px 0 10px 25px; 
+    padding: 10px 0 10px 0; 
     font-size: 1.25em; 
     pointer-events: none; 
     color: #444;
     transition: 0.5s;
+    display: inline; /*增添*/
+    width: 5.5em; /*增添*/
+    height: 1.3em; /*增添*/
+    text-align: center; /*增添*/
+    line-height: 1.3em; /*增添*/
 }
 
-.content .form .inputBox input:focus ~ span,
-.content .form .inputBox input:valid ~ span
+.content .form .inputBox input:focus ~ div,
+.content .form .inputBox input:valid ~ div
 {
     transform: translateY(-20px);
     font-size: 0.9em;
     background: #444;
     color: #fff;
     padding: 2px, 2px;
+    line-height: 0.3em; /*增添*/
+    border-radius: 0; /*增添*/
 }
 
 .content .form .links {
