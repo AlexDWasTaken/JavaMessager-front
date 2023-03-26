@@ -1,6 +1,33 @@
 <script>
 import axios from 'axios'
 
+function checkPassword(password) {
+  // length
+  if (password.length < 8) {
+    return 'Password has to be at least 8 letters long';
+  }
+  
+  // complexity
+  const regexList = [
+    /\d/, // numbers
+    /[a-z]/, // lower case
+    /[A-Z]/, // upper case
+    /[\W_]/ // special characters
+  ];
+  let count = 0;
+  for (let i = 0; i < regexList.length; i++) {
+    if (regexList[i].test(password)) {
+      count++;
+    }
+  }
+  if (count < 3) {
+    return 'Password must contain at least three types of numbers, lowercase letters, uppercase letters and special characters';
+  }
+  
+  return true;
+}
+
+
 export default {
     data() {
         return {
@@ -12,30 +39,31 @@ export default {
         }
     },
     methods: {
-        login: function() {
+        register: function() {
             let fd = new FormData();
-
-            if(this.username == "" && this.password == "") {
-                this.message = "Please fill username and password."
-                this.failed = true;
-                return;
-            }
 
             fd.append("username", this.username);
             fd.append("password", this.password);
 
-            axios.post('user/login', fd)
+            let result = checkPassword(this.password)
+            if (result != true) {
+                alert(result)
+                return
+            }
+
+            axios.post('user/register', fd)
                 .then(
                     response => {
                         const data = response.data
                         console.log(data);
                         if(data.success == false) {
-                            this.message = "Wrong username or password."
+                            this.message = data.message
                             this.failed = "true"
                         } else {
                             this.failed = "false"
                             const token = response.data.token
                             localStorage.setItem('token', token)
+                            alert("Signed up!")
                             this.$router.push({
                                 path: '/chat'
                             })
@@ -64,7 +92,7 @@ export default {
             <div class="content">
                 <div class="form">
                     <h3 class = "logo"><i class="fa-solid fa-key"></i></h3>
-                    <h2>Sign in</h2>
+                    <h2>Register</h2>
                     <p v-if = "failed">{{message}}</p>
                     <div class="inputBox">
                         <input type="text" v-model="username" required>
@@ -75,10 +103,10 @@ export default {
                         <div>Password</div>
                     </div>
                     <div class="links">
-                        <a href="/register">Sign Up</a>
+                        Already have an account?<a href="/"> Sign in</a>
                     </div>
                     <div class="inputBox">
-                        <input type="submit" value="login" @click="login()">
+                        <input type="submit" value="register" @click="register()">
                     </div>
                     
                 </div>
@@ -280,6 +308,7 @@ export default {
 }
 
 .content .form .links {
+    font-size: smaller;
     width: 100%;
     margin-top: 15px;
     display: flex;
