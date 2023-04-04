@@ -9,48 +9,70 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
     
 
 </template>
 
 <script>
 
+import {io} from 'socket.io-client'
+
 export default {
-    data() {
-        return {
-            chatContent: [],
-        }
+  data() {
+    return {
+      chatContent: [],
+      newMessage: "",
+      socket: null,
+      isAuthenticated: false,
+    };
+  },
+  methods: {
+    sendMessage() {
+      this.socket.emit("message", this.newMessage);
+      this.newMessage = "";
     },
-    created() {
-        // 创建Socket实例
-        this.socket = new WebSocket('ws://localhost:8080/socket');
+    initSocket() {
+      this.socket = io("http://localhost:3000", {
+        query: {
+          token: localStorage.getItem("token"),
+        },
+      });
 
-        this.socket.onopen = function(event) {
-            const token = localStorage.getItem('token'); // 获取存储在本地的Token
-            this.socket.send(token); // 发送Token给后端
-        };
-        
-        // 监听连接事件
-        this.socket.on('connect', () => {
-            console.log('Socket connected');
-        });
+      this.socket.on("connect", () => {
+        console.log("connected");
+      });
 
-        // 监听消息事件
-        this.socket.on('message', (data) => {
-            console.log('Socket message received:', data);
-            this.chatContent.push(data);
-        });
-
-        // 监听断开连接事件
-        this.socket.on('disconnect', () => {
-            console.log('Socket disconnected');
+      this.socket.on("newMessage", (message) => {
+        this.chatContent.push(message);
+      });
+    },
+    checkAuth() {
+      // Check if user is authenticated before connecting to socket
+      // Make a request to backend to check if token is valid
+      console.log(localStorage.getItem('token'))
+      fetch("http://localhost:8080/api/check-auth", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.authenticated) {
+            this.isAuthenticated = true;
+            this.initSocket();
+          } else {
+            // Redirect user to login page if not authenticated
+            this.$router.push("/login");
+          }
         });
     },
-    methods: {
+  },
+  mounted() {
+    this.checkAuth();
+  },
+};
 
-    }
-}
 
 class Message {
     constructor(name, content) {
