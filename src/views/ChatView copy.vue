@@ -16,8 +16,8 @@
 
 <script>
 
-import {io} from 'socket.io-client'
-import SockJS from 'sockjs-client'
+//import {io} from 'socket.io-client'
+import SockJS from 'sockjs-client/dist/sockjs.min.js'
 import Stomp from "stompjs"
 
 export default {
@@ -31,15 +31,32 @@ export default {
     };
   },
   methods: {
+    // sendMessage() {
+    //   this.socket.emit("message", this.newMessage);
+    //   this.newMessage = "";
+    // },
+    // initSocket() {
+    //   this.socket = io("http://localhost:8080", {
+    //     query: {
+    //       token: localStorage.getItem("token"),
+    //     },
+    //   });
+
+    //   this.socket.on("connect", () => {
+    //     console.log("connected");
+    //   });
+
+    //   this.socket.on("newMessage", (message) => {
+    //     this.chatContent.push(message);
+    //   });
+    // },
     sendMessage() {
       this.stompClient.send("/app/message", {}, this.username + ": " + this.newMessage)
       this.newMessage = ""
     },
     initSocket() {
-      const socket = new SockJS("http://localhost:8080/socketMessaging", null, { withCredentials: true })
-      console.log(1)
+      const socket = new SockJS("http://localhost:8080/socketMessaging")
       this.stompClient = Stomp.over(socket)
-      console.log(2)
       this.stompClient.connect({}, () => {
         console.log("connected")
         this.stompClient.subscribe("/topic/newMessage", (message) => {

@@ -23,6 +23,14 @@ export default {
 
             fd.append("username", this.username);
             fd.append("password", this.password);
+            //test code
+            axios.get('/Test')
+                .then(
+                    response => {
+                        console.log(response)
+                    }
+                )
+            //test code
 
             axios.post('user/login', fd)
                 .then(
@@ -37,6 +45,7 @@ export default {
                             console.log(response)
                             const token = response.data.data.token
                             localStorage.setItem('token', token)
+                            localStorage.setItem('username', this.username)
                             this.$router.push({
                                 path: '/chat'
                             })
@@ -48,9 +57,6 @@ export default {
                     this.failed = "true"
                     console.log(response)
                 })
-            
-
-
         }
     }
     
