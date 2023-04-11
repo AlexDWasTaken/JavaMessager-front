@@ -2,7 +2,8 @@
 
 The front-end project of JavaMessager for grading.
 
-Things to be done: Register system & Message function to be started.
+Basic functionality finished. Refining user interface right now.
+
 
 ## Recommended IDE Setup
 

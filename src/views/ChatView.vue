@@ -2,8 +2,8 @@
 
   
   <div v-if="chatContent.length === 0">
-    <h1>Logged in!</h1>
-    <h1>There's currently no content to display at all 🫠</h1>
+    <h1>Logged in! 👏</h1>
+    <h1>There's currently no content to display 🫠</h1>
     <h1>Press "Enter" to send message 😊</h1>
     <h1>Feel free to try Emoji ❤🧡💖💓</h1>
   </div>
@@ -11,20 +11,25 @@
       <div class="container">
           <div class="box">
               <div class="content">
-                  <input type="text" placeholder="Enter text here" v-model="newMessage" @keyup.enter="sendMessage">
+                  <input type="text" placeholder="Say Something! Press enter to send. 🫰" v-model="newMessage" @keyup.enter="sendMessage">
               </div>
           </div>
       </div>
-      <table>
-        <tbody>
-          <tr v-for="(message, index) in chatContent" :key="index">
-            <td> 
-              <h2>{{ message }}</h2> 
-              <hr>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="chat-container">
+        <table ref="messageTable">
+          <tbody>
+            <tr v-for="(message, index) in chatContent" :key="index">
+              <td> 
+                <div>
+                  <h2>{{ message }}</h2>
+                </div> 
+                <hr>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
   </div>
     
 
@@ -115,6 +120,16 @@ export default {
   mounted() {
     this.checkAuth();
   },
+  watch: {
+    chatContent: {
+      handler: function (val, oldVal) {
+        this.$nextTick(() => {
+          this.$refs.messageTable.scrollIntoView(false);
+        })
+      },
+    deep: true
+  }
+}
 };
 
 
@@ -329,7 +344,19 @@ table {
 
 td {
   text-align: left;
-  width: 100%; /* 根据需求调整宽度 */
+  width: 100%; 
   height: 55px;
+  word-break: break-all;
 }
+
+.chat-container {
+  max-height: 700px; 
+  overflow-y: auto;
+}
+/*
+td > div {
+  overflow: auto;
+  max-height: 100%;
+}
+*/
 </style>
