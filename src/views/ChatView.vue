@@ -1,22 +1,38 @@
 <template>
 
+  
+  <div v-if="chatContent.length === 0">
     <h1>Logged in!</h1>
-    <div class="bigcontainer">
-        <div class="container">
-            <div class="box">
-                <div class="content">
-                    <input type="text" placeholder="Enter text here">
-                </div>
-            </div>
-        </div>
-    </div>
+    <h1>There's currently no content to display at all 🫠</h1>
+    <h1>Press "Enter" to send message 😊</h1>
+    <h1>Feel free to try Emoji ❤🧡💖💓</h1>
+  </div>
+  <div class="bigcontainer">
+      <div class="container">
+          <div class="box">
+              <div class="content">
+                  <input type="text" placeholder="Enter text here" v-model="newMessage" @keyup.enter="sendMessage">
+              </div>
+          </div>
+      </div>
+      <table>
+        <tbody>
+          <tr v-for="(message, index) in chatContent" :key="index">
+            <td> 
+              <h2>{{ message }}</h2> 
+              <hr>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
     
 
 </template>
 
 <script>
 
-import {io} from 'socket.io-client'
+
 import SockJS from 'sockjs-client'
 import Stomp from "stompjs"
 
@@ -32,8 +48,14 @@ export default {
   },
   methods: {
     sendMessage() {
-      this.stompClient.send("/app/message", {}, this.username + ": " + this.newMessage)
-      this.newMessage = ""
+      console.log("________________________________________")
+      if (this.newMessage != ""){
+        this.stompClient.send("/app/message", {}, this.username + ": " + this.newMessage)
+        console.log("Trying to push message:" + this.newMessage)
+        this.newMessage = ""
+      } else {
+        alert("Please make sure the message in non-empty")
+      }
     },
     initSocket() {
       const socket = new SockJS("http://localhost:8080/socketMessaging", null, { withCredentials: true })
@@ -44,7 +66,7 @@ export default {
         console.log("connected")
         this.stompClient.subscribe("/topic/newMessage", (message) => {
           this.chatContent.push(message.body)
-          console.log(message.body)
+          console.log("Message sent successfully:" + message.body)
         });
       });
     },
@@ -69,7 +91,27 @@ export default {
           }
         });
     },
-  },
+    checkAuthWhenPushingMessage(){
+      fetch("http://localhost:8080/api/check-auth", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.authenticated) {
+            this.isAuthenticated = true
+            console.log("Authenticated user. Moving on...")
+          } else {
+            // Redirect user to login page if not authenticated
+            this.isAuthenticated = false
+            alert("Unauthorized user. Going back...")
+            console.log("Unauthorized user. Going back...")
+            this.$router.push("/")
+          }
+        });
+    }
+    },
   mounted() {
     this.checkAuth();
   },
@@ -279,4 +321,15 @@ input:focus {
     background: #333;
 }
 
+
+table {
+  table-layout: fixed;
+  width: 700px;
+}
+
+td {
+  text-align: left;
+  width: 100%; /* 根据需求调整宽度 */
+  height: 55px;
+}
 </style>

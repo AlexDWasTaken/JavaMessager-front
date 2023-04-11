@@ -91,7 +91,7 @@ export default {
             <div class="shadow"></div>
             <div class="content">
                 <div class="form">
-                    <h3 class = "logo"><i class="fa-solid fa-key"></i></h3>
+                    <h3 class = "logo">🤔</h3>
                     <h2>Register</h2>
                     <p v-if = "failed">{{message}}</p>
                     <div class="inputBox">
