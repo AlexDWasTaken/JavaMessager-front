@@ -12,10 +12,10 @@ export default {
         }
     },
     methods: {
-        login: function() {
+        login: function () {
             let fd = new FormData();
 
-            if(this.username == "" && this.password == "") {
+            if (this.username == "" && this.password == "") {
                 this.message = "Please fill username and password."
                 this.failed = true;
                 return;
@@ -37,7 +37,7 @@ export default {
                     response => {
                         const data = response.data
                         console.log(data);
-                        if(data.success == false) {
+                        if (data.success == false) {
                             this.message = "Wrong username or password."
                             this.failed = "true"
                         } else {
@@ -53,13 +53,12 @@ export default {
                     }
                 )
                 .catch(error => {
-                    this.message = "Something went wrong. Please try again later."
+                    this.message = "Something went wrong. Is the server running?"
                     this.failed = "true"
                     console.log(response)
                 })
         }
     }
-    
 }
 </script>
 
@@ -70,9 +69,9 @@ export default {
             <div class="shadow"></div>
             <div class="content">
                 <div class="form">
-                    <h3 class = "logo">🔒</h3>
+                    <h3 class="logo">🔒</h3>
                     <h2>Sign in</h2>
-                    <p v-if = "failed">{{message}}</p>
+                    <p v-if="failed"><font color = red>{{ message }}</font></p>
                     <div class="inputBox">
                         <input type="text" v-model="username" required>
                         <div>Username</div>
@@ -87,7 +86,6 @@ export default {
                     <div class="inputBox">
                         <input type="submit" value="login" @click="login()">
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -95,13 +93,13 @@ export default {
 </template>
 
 <style scoped>
-*
-{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: consolas;
 }
+
 .container {
     display: flex;
     justify-content: center;
@@ -180,27 +178,27 @@ export default {
     z-index: 10;
 }
 
-.content{
+.content {
     position: relative;
     width: 100%;
     height: 100%;
     background: linear-gradient(#dbdae1, #a3aaba);
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1),
-    15px 15px 15px rgba(0, 0, 0, 0.1),
-    20px 10px 20px rgba(0, 0, 0, 0.1),
-    50px 50px 80px rgba(0, 0, 0, 0.25),
-    inset 3px 3px 2px #fff;
+        15px 15px 15px rgba(0, 0, 0, 0.1),
+        20px 10px 20px rgba(0, 0, 0, 0.1),
+        50px 50px 80px rgba(0, 0, 0, 0.25),
+        inset 3px 3px 2px #fff;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .content .form {
-    position: relative; 
-    width: 260px; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+    position: relative;
+    width: 260px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
 }
 
@@ -214,7 +212,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius:50%
+    border-radius: 50%
 }
 
 .content .form {
@@ -240,50 +238,56 @@ export default {
 }
 
 .content .form .inputBox input {
-    position: relative; 
-    width: 100%; 
-    padding: 10px 0 10px 5px; 
-    font-size: 1.25em; 
-    background: transparent; 
-    box-shadow: none; 
-    border: none; 
+    position: relative;
+    width: 100%;
+    padding: 10px 0 10px 5px;
+    font-size: 1.25em;
+    background: transparent;
+    box-shadow: none;
+    border: none;
     border-bottom: 3px solid #444;
     outline: none;
 }
 
 .content .form .inputBox i {
-    position:absolute;
+    position: absolute;
     left: 0;
     bottom: 15px;
     font-size: 1.25em;
     color: #444;
 }
 
-.content .form .inputBox div { 
-    position: absolute; 
-    left: 0; 
-    padding: 10px 0 10px 0; 
-    font-size: 1.25em; 
-    pointer-events: none; 
+.content .form .inputBox div {
+    position: absolute;
+    left: 0;
+    padding: 10px 0 10px 0;
+    font-size: 1.25em;
+    pointer-events: none;
     color: #444;
     transition: 0.5s;
-    display: inline; /*增添*/
-    width: 5.5em; /*增添*/
-    height: 1.3em; /*增添*/
-    text-align: center; /*增添*/
-    line-height: 1.3em; /*增添*/
+    display: inline;
+    /*增添*/
+    width: 5.5em;
+    /*增添*/
+    height: 1.3em;
+    /*增添*/
+    text-align: center;
+    /*增添*/
+    line-height: 1.3em;
+    /*增添*/
 }
 
-.content .form .inputBox input:focus ~ div,
-.content .form .inputBox input:valid ~ div
-{
+.content .form .inputBox input:focus~div,
+.content .form .inputBox input:valid~div {
     transform: translateY(-20px);
     font-size: 0.9em;
     background: #444;
     color: #fff;
     padding: 2px, 2px;
-    line-height: 0.3em; /*增添*/
-    border-radius: 0; /*增添*/
+    line-height: 0.3em;
+    /*增添*/
+    border-radius: 0;
+    /*增添*/
 }
 
 .content .form .links {
@@ -293,23 +297,19 @@ export default {
     justify-content: space-between;
 }
 
-.content .form .links a
-{
+.content .form .links a {
     color: #444;
     text-decoration: none;
 }
 
-.content .form .inputBox input[type="submit"]
-{
+.content .form .inputBox input[type="submit"] {
     background: #444;
     color: #fff;
     cursor: pointer;
     padding: 10px;
 }
 
-.content .form .inputBox input[type="submit"]:hover
-{
+.content .form .inputBox input[type="submit"]:hover {
     background: #333;
 }
-
 </style>

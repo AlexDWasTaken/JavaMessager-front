@@ -1,18 +1,18 @@
 <template>
-    <button @click = 'TestLocal'>Click me</button>
+  <button @click='TestLocal'>View for testing. Click me</button>
 </template>
   
 <script>
-  export default {
-    data() {
-      return {
+export default {
+  data() {
+    return {
 
-      }
-    },
-    methods: {
-      TestLocal: function() {
-        localStorage.setItem("test", "test")
-      }
+    }
+  },
+  methods: {
+    TestLocal: function () {
+      localStorage.setItem("test", "test")
     }
   }
+}
 </script>
