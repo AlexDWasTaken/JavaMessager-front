@@ -67,9 +67,7 @@ export default {
     },
     initSocket() {
       const socket = new SockJS("http://localhost:8080/socketMessaging", null, { withCredentials: true })
-      console.log(1)
       this.stompClient = Stomp.over(socket)
-      console.log(2)
       this.stompClient.connect({}, () => {
         console.log("connected")
         this.stompClient.subscribe("/topic/newMessage", (message) => {
@@ -145,12 +143,6 @@ export default {
 }
 
 .container {
-  /*
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: -100vh
-    */
   position: fixed;
   bottom: 30px;
   z-index: 999;
@@ -190,8 +182,6 @@ export default {
   filter: blur(1px);
   z-index: 1;
 }
-
-
 
 .content {
   position: relative;
@@ -279,15 +269,10 @@ input:focus {
   color: #444;
   transition: 0.5s;
   display: inline;
-  /*增添*/
   width: 5.5em;
-  /*增添*/
   height: 1.3em;
-  /*增添*/
   text-align: center;
-  /*增添*/
   line-height: 1.3em;
-  /*增添*/
 }
 
 .content .form .inputBox input:focus~div,
@@ -298,9 +283,7 @@ input:focus {
   color: #fff;
   padding: 2px, 2px;
   line-height: 0.3em;
-  /*增添*/
   border-radius: 0;
-  /*增添*/
 }
 
 .content .form .links {
@@ -344,27 +327,17 @@ td {
   overflow-y: auto;
 }
 
-/*
-td > div {
-  overflow: auto;
-  max-height: 100%;
-}
-*/
 .blur {
   filter: blur(8px);
-  /* 添加模糊效果 */
   animation: blur-animation 0.5s;
-  /* 添加CSS动画 */
 }
 
 @keyframes blur-animation {
   from {
     filter: blur(0px);
-    /* 从没有模糊效果开始 */
   }
 
   to {
     filter: blur(8px);
-    /* 逐渐增加模糊程度 */
   }
 }</style>
