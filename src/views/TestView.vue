@@ -1,3 +1,6 @@
+
+<!--The view for testing, nothing to display here-->
+
 <template>
   <button @click='TestLocal'>View for testing. Click me</button>
 </template>
@@ -6,7 +9,7 @@
 export default {
   data() {
     return {
-
+      nothing: none
     }
   },
   methods: {

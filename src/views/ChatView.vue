@@ -12,12 +12,14 @@
     <div class="container">
       <div class="box">
         <div class="content">
+          <!--The input box-->
           <input type="text" placeholder="Say Something! Press enter to send. 🫰" v-model="newMessage"
             @keyup.enter="sendMessage">
         </div>
       </div>
     </div>
     <div class="chat-container">
+      <!--Contains all the chat content-->
       <div v-if="loseConnection === true">
         <h1>Connection lost. Is the server running?</h1>
       </div>
@@ -38,8 +40,6 @@
 </template>
 
 <script>
-
-
 import SockJS from 'sockjs-client'
 import Stomp from "stompjs"
 
@@ -80,7 +80,7 @@ export default {
       this.stompClient.ws.onclose = () => {
         console.log("Connection closed");
         this.loseConnection = true
-        // 在失去连接时给 big-container 添加模糊效果
+        // Blur the box on disconnecting
         this.stompClient.disconnect();
         this.showAlert = true;
         this.alertMessage = "You have been disconnected!";
@@ -111,31 +111,12 @@ export default {
           }
         });
     },
-    // checkAuthWhenPushingMessage(){
-    //   fetch("http://localhost:8080/api/check-auth", {
-    //     headers: {
-    //       Authorization: "Bearer " + localStorage.getItem("token"),
-    //     },
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       if (data.authenticated) {
-    //         this.isAuthenticated = true
-    //         console.log("Authenticated user. Moving on...")
-    //       } else {
-    //         // Redirect user to login page if not authenticated
-    //         this.isAuthenticated = false
-    //         alert("Unauthorized user. Going back...")
-    //         console.log("Unauthorized user. Going back...")
-    //         this.$router.push("/")
-    //       }
-    //     });
-    // }
   },
   mounted() {
     this.checkAuth();
   },
   watch: {
+    // Keep the chat content down to the bottom
     chatContent: {
       handler: function (val, oldVal) {
         this.$nextTick(() => {

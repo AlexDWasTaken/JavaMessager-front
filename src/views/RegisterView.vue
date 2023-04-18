@@ -2,12 +2,12 @@
 import axios from 'axios'
 
 function checkPassword(password) {
-    // length
+    // Length
     if (password.length < 8) {
         return 'Password has to be at least 8 letters long';
     }
 
-    // complexity
+    // Complexity
     const regexList = [
         /\d/, // numbers
         /[a-z]/, // lower case
@@ -75,9 +75,6 @@ export default {
                     this.failed = "true"
                     console.log(response)
                 })
-
-
-
         }
     }
 
@@ -288,15 +285,10 @@ export default {
     color: #444;
     transition: 0.5s;
     display: inline;
-    /*增添*/
     width: 5.5em;
-    /*增添*/
     height: 1.3em;
-    /*增添*/
     text-align: center;
-    /*增添*/
     line-height: 1.3em;
-    /*增添*/
 }
 
 .content .form .inputBox input:focus~div,
@@ -307,9 +299,7 @@ export default {
     color: #fff;
     padding: 2px, 2px;
     line-height: 0.3em;
-    /*增添*/
     border-radius: 0;
-    /*增添*/
 }
 
 .content .form .links {
