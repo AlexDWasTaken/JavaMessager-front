@@ -61,7 +61,7 @@ export default {
                             this.failed = "true"
                         } else {
                             this.failed = "false"
-                            const token = response.data.token
+                            const token = response.data.data.token
                             localStorage.setItem('token', token)
                             alert("Signed up!")
                             this.$router.push({
