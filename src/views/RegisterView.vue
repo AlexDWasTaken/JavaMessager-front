@@ -63,6 +63,7 @@ export default {
                             this.failed = "false"
                             const token = response.data.data.token
                             localStorage.setItem('token', token)
+                            localStorage.setItem('username', this.username)
                             alert("Signed up!")
                             this.$router.push({
                                 path: '/chat'
