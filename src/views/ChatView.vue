@@ -1,8 +1,8 @@
 <template>
-  <div v-if="!isAuthenticated === true">
+  <div class = "tip" v-if="!isAuthenticated === true">
     <h1>Authenticating. If the situation persists, go back to login page.</h1>
   </div>
-  <div v-if="chatContent.length === 0 && isAuthenticated === true">
+  <div class = "tip" v-if="chatContent.length === 0 && isAuthenticated === true">
     <h1>Logged in! 👏</h1>
     <h1>There's currently no content to display 🫠</h1>
     <h1>Press "Enter" to send message 😊</h1>
@@ -13,7 +13,9 @@
       <div class="box">
         <div class="content">
           <!--The input box-->
-          <input type="text" placeholder="Say Something! Press enter to send. 🫰" v-model="newMessage"
+          <input v-if="loseConnection === false" type="text" placeholder="Say Something! Press enter to send. 🫰" v-model="newMessage"
+            @keyup.enter="sendMessage">
+            <input v-if="loseConnection === true" type="text" placeholder="Connection Lost! Is the server running?" v-model="newMessage"
             @keyup.enter="sendMessage">
         </div>
       </div>
@@ -135,6 +137,9 @@ export default {
   font-family: consolas;
 }
 
+.tip {
+  z-index: 998
+}
 
 .bigcontainer {
   display: flex;
@@ -323,7 +328,7 @@ td {
 }
 
 .chat-container {
-  max-height: 700px;
+  max-height: 70vh;
   overflow-y: auto;
 }
 
